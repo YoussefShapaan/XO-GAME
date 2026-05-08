@@ -1,0 +1,241 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Arial;
+
+  background:linear-gradient(135deg,#020617,#0f172a);
+  color:white;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  min-height:100vh;
+
+  padding:18px;
+}
+
+/* الحاوية */
+.container{
+  text-align:center;
+}
+
+/* العنوان */
+h1{
+  margin-bottom:16px;
+
+  font-size:33px;
+
+  color:#38bdf8;
+
+  text-shadow:
+    0 0 10px rgba(56,189,248,.8),
+    0 0 20px rgba(56,189,248,.6),
+    0 0 40px rgba(56,189,248,.4);
+}
+
+/* أزرار المود */
+.modes{
+  margin-bottom:16px;
+}
+
+button{
+  padding:9px 16px;
+  margin:4px;
+
+  border:none;
+  border-radius:10px;
+
+  background:#111827;
+  color:white;
+
+  cursor:pointer;
+
+  transition:.3s;
+
+  font-size:14px;
+  font-weight:bold;
+
+  border:2px solid #38bdf8;
+
+  box-shadow:
+    0 0 10px rgba(56,189,248,.4),
+    0 0 20px rgba(56,189,248,.2);
+}
+
+/* Hover */
+button:hover{
+  transform:scale(1.04);
+
+  background:#1e293b;
+
+  box-shadow:
+    0 0 15px rgba(56,189,248,.8),
+    0 0 35px rgba(56,189,248,.5);
+}
+
+/* الزر النشط */
+.active{
+  background:linear-gradient(135deg,#38bdf8,#6366f1);
+
+  box-shadow:
+    0 0 15px rgba(99,102,241,.8),
+    0 0 35px rgba(99,102,241,.5);
+}
+
+/* البورد */
+.board{
+  display:grid;
+
+  grid-template-columns:repeat(3,88px);
+
+  gap:10px;
+
+  justify-content:center;
+
+  margin:22px auto;
+}
+
+/* الخلايا */
+.cell{
+  width:88px;
+  height:88px;
+
+  background:#020617;
+
+  border-radius:14px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  font-size:38px;
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:.25s ease;
+
+  border:2px solid #38bdf8;
+
+  box-shadow:
+    0 0 10px rgba(56,189,248,.4),
+    0 0 20px rgba(56,189,248,.2);
+}
+
+/* Hover للخلايا */
+.cell:hover{
+  transform:scale(1.04);
+
+  background:#0f172a;
+
+  box-shadow:
+    0 0 20px rgba(56,189,248,.9),
+    0 0 40px rgba(56,189,248,.5);
+}
+
+/* X */
+.x{
+  color:#38bdf8;
+
+  text-shadow:
+    0 0 10px rgba(56,189,248,.9),
+    0 0 25px rgba(56,189,248,.7),
+    0 0 40px rgba(56,189,248,.5);
+}
+
+/* O */
+.o{
+  color:#f43f5e;
+
+  text-shadow:
+    0 0 10px rgba(244,63,94,.9),
+    0 0 25px rgba(244,63,94,.7),
+    0 0 40px rgba(244,63,94,.5);
+}
+
+/* الخلايا الفائزة */
+.win{
+  background:#22c55e !important;
+
+  color:white !important;
+
+  box-shadow:
+    0 0 15px rgba(34,197,94,.9),
+    0 0 35px rgba(34,197,94,.7),
+    0 0 60px rgba(34,197,94,.5);
+}
+
+/* الاسكور */
+.scores{
+  display:flex;
+  justify-content:center;
+
+  gap:16px;
+
+  margin-top:16px;
+
+  font-size:17px;
+  font-weight:bold;
+}
+
+/* صندوق الاسكور */
+.scores div{
+  background:#111827;
+
+  padding:7px 12px;
+
+  border-radius:10px;
+
+  border:1px solid #38bdf8;
+
+  box-shadow:
+    0 0 10px rgba(56,189,248,.3);
+}
+
+/* الكنترول */
+.controls{
+  margin-top:18px;
+}
+
+/* حالة اللعبة */
+#status{
+  min-height:26px;
+
+  font-size:18px;
+  font-weight:bold;
+
+  color:#e2e8f0;
+
+  text-shadow:
+    0 0 10px rgba(255,255,255,.3);
+}
+
+/* Responsive */
+@media(max-width:500px){
+
+  h1{
+    font-size:28px;
+  }
+
+  .board{
+    grid-template-columns:repeat(3,74px);
+    gap:8px;
+  }
+
+  .cell{
+    width:74px;
+    height:74px;
+    font-size:30px;
+  }
+
+  button{
+    font-size:13px;
+    padding:7px 12px;
+  }
+
+}
