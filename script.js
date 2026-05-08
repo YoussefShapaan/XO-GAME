@@ -203,7 +203,7 @@ function checkEnd(){
     updateScores();
 
     document.getElementById("status")
-      .textContent = `اللاعب ${w} فاز!`;
+      .textContent = `Player ${w} wins!`;
 
     return true;
   }
@@ -219,7 +219,7 @@ function checkEnd(){
     updateScores();
 
     document.getElementById("status")
-      .textContent = "تعادل!";
+      .textContent = "It's a draw!";
 
     return true;
   }
@@ -232,7 +232,7 @@ function checkEnd(){
 function updateStatus(){
 
   document.getElementById("status")
-    .textContent = `دور اللاعب ${p}`;
+    .textContent = `Player ${p}'s turn`;
 }
 
 /* تحديث النتائج */

@@ -7,24 +7,24 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body> 
 
 <div class="container">
 
-  <h1> X-O لعبة </h1>
+  <h1> X-O GAME </h1>
   <!-- اختيار نوع اللعب -->
   <div class="modes">
     <button id="m2" onclick="setMode('multi')" class="active">
-      لاعب ضد لاعب
-    </button>
+      player vs player 
+   </button>
 
     <button id="mai" onclick="setMode('ai')">
-      لاعب ضد الذكاء الاصطناعي
+      Player vs. AI
     </button>
   </div>
 
   <!-- حالة اللعبة -->
-  <h2 id="status">دور اللاعب X</h2>
+  <h2 id="status">Player X's turn</h2>
 
   <!-- لوحة اللعبة -->
   <div id="board" class="board"></div>
@@ -33,13 +33,13 @@
   <div class="scores">
     <div>X : <span id="sx">0</span></div>
     <div>O : <span id="so">0</span></div>
-    <div>تعادل : <span id="sd">0</span></div>
+    <div>Draw : <span id="sd">0</span></div>
   </div>
 
   <!-- التحكم -->
   <div class="controls">
-    <button onclick="restart()">إعادة اللعب</button>
-    <button onclick="resetScores()">تصفير النتائج</button>
+    <button onclick="restart()">Restart Game</button>
+    <button onclick="resetScores()">Reset Scores</button>
   </div>
 
 </div>
