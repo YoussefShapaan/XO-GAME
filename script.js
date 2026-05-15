@@ -16,10 +16,7 @@ const wins = [
   [0,4,8],[2,4,6]
 ];
 
-/* ===================== */
-/* 🎵 SOUND SYSTEM */
-/* ===================== */
-
+/* SOUND SYSTEM */
 const sounds = {
   click: new Audio("assets/sounds/dog-clicker_IygBqAk.mp3"),
   win: new Audio("assets/sounds/winner-price-is-right.mp3"),
@@ -33,10 +30,7 @@ function playSound(type){
   }
 }
 
-/* ===================== */
 /* AI (Minimax) */
-/* ===================== */
-
 function minimax(board, isMax){
 
   const w = getWinner(board);
@@ -82,10 +76,7 @@ function bestMove(){
   return idx;
 }
 
-/* ===================== */
 /* WIN CHECK */
-/* ===================== */
-
 function getWinner(board){
   for(const [a,c,e] of wins){
     if(board[a] && board[a] === board[c] && board[a] === board[e]){
@@ -95,10 +86,7 @@ function getWinner(board){
   return null;
 }
 
-/* ===================== */
 /* RENDER BOARD */
-/* ===================== */
-
 function render(){
   const el = document.getElementById("board");
   el.innerHTML = "";
@@ -118,10 +106,7 @@ function render(){
   highlightWinner();
 }
 
-/* ===================== */
 /* HIGHLIGHT WIN */
-/* ===================== */
-
 function highlightWinner(){
   const el = document.getElementById("board");
 
@@ -134,14 +119,11 @@ function highlightWinner(){
   });
 }
 
-/* ===================== */
 /* MOVE */
-/* ===================== */
-
 function move(i){
   if(!on || b[i]) return;
 
-  playSound("click"); // 🎯 click sound
+  playSound("click");
 
   b[i] = p;
   render();
@@ -156,10 +138,7 @@ function move(i){
   }
 }
 
-/* ===================== */
 /* AI TURN */
-/* ===================== */
-
 function aiTurn(){
   if(!on) return;
 
@@ -174,10 +153,7 @@ function aiTurn(){
   updateStatus();
 }
 
-/* ===================== */
 /* GAME END CHECK */
-/* ===================== */
-
 function checkEnd(){
 
   const w = getWinner(b);
@@ -191,7 +167,7 @@ function checkEnd(){
     document.getElementById("status")
       .textContent = `Player ${w} wins!`;
 
-    playSound("win"); // 🏆 win sound
+    playSound("win"); 
 
     return true;
   }
@@ -205,7 +181,7 @@ function checkEnd(){
     document.getElementById("status")
       .textContent = "It's a draw!";
 
-    playSound("loss"); // 💥 draw/loss sound
+    playSound("loss");
 
     return true;
   }
@@ -213,10 +189,7 @@ function checkEnd(){
   return false;
 }
 
-/* ===================== */
 /* UI UPDATES */
-/* ===================== */
-
 function updateStatus(){
   document.getElementById("status")
     .textContent = `Player ${p}'s turn`;
@@ -232,10 +205,7 @@ function saveScores(){
   localStorage.setItem("scores", JSON.stringify(sc));
 }
 
-/* ===================== */
 /* CONTROLS */
-/* ===================== */
-
 function restart(){
   b = [...Array(9).fill("")];
   p = "X";
@@ -262,9 +232,6 @@ function setMode(m){
   restart();
 }
 
-/* ===================== */
-/* INIT */
-/* ===================== */
-
+/* بداية اللعبة */
 updateScores();
 restart();

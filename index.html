@@ -12,7 +12,7 @@
 <div class="container">
 
   <h1> X-O GAME </h1>
-  <!-- اختيار نوع اللعب -->
+  <!-- Mode اللعب-->
   <div class="modes">
     <button id="m2" onclick="setMode('multi')" class="active">
       player vs player 
@@ -23,20 +23,20 @@
     </button>
   </div>
 
-  <!-- حالة اللعبة -->
+  <!-- دور اللاعب -->
   <h2 id="status">Player X's turn</h2>
 
-  <!-- لوحة اللعبة -->
+  <!-- board-->
   <div id="board" class="board"></div>
 
-  <!-- النتائج -->
+  <!-- scores -->
   <div class="scores">
     <div>X : <span id="sx">0</span></div>
     <div>O : <span id="so">0</span></div>
     <div>Draw : <span id="sd">0</span></div>
   </div>
 
-  <!-- التحكم -->
+  <!-- controls -->
   <div class="controls">
     <button onclick="restart()">Restart Game</button>
     <button onclick="resetScores()">Reset Scores</button>

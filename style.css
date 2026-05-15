@@ -19,12 +19,11 @@ body{
   padding:18px;
 }
 
-/* الحاوية */
 .container{
   text-align:center;
 }
 
-/* العنوان */
+/* Title */
 h1{
   margin-bottom:16px;
 
@@ -38,7 +37,7 @@ h1{
     0 0 40px rgba(56,189,248,.4);
 }
 
-/* أزرار المود */
+/* Modes ازرار */
 .modes{
   margin-bottom:16px;
 }
@@ -87,7 +86,7 @@ button:hover{
     0 0 35px rgba(99,102,241,.5);
 }
 
-/* البورد */
+/* board */
 .board{
   display:grid;
 
@@ -100,7 +99,7 @@ button:hover{
   margin:22px auto;
 }
 
-/* الخلايا */
+/* مربعات اللعب */
 .cell{
   width:88px;
   height:88px;
@@ -127,7 +126,7 @@ button:hover{
     0 0 20px rgba(56,189,248,.2);
 }
 
-/* Hover للخلايا */
+/* Hover للمربعات */
 .cell:hover{
   transform:scale(1.04);
 
@@ -158,7 +157,7 @@ button:hover{
     0 0 40px rgba(244,63,94,.5);
 }
 
-/* الخلايا الفائزة */
+/*الاعب الفائز */
 .win{
   background:#22c55e !important;
 
@@ -170,7 +169,7 @@ button:hover{
     0 0 60px rgba(34,197,94,.5);
 }
 
-/* الاسكور */
+/* scores */
 .scores{
   display:flex;
   justify-content:center;
@@ -183,7 +182,7 @@ button:hover{
   font-weight:bold;
 }
 
-/* صندوق الاسكور */
+/*مربعات scores*/
 .scores div{
   background:#111827;
 
@@ -197,12 +196,12 @@ button:hover{
     0 0 10px rgba(56,189,248,.3);
 }
 
-/* الكنترول */
+/* controls */
 .controls{
   margin-top:18px;
 }
 
-/* حالة اللعبة */
+/* دورة اللاعب */
 #status{
   min-height:26px;
 
@@ -215,7 +214,7 @@ button:hover{
     0 0 10px rgba(255,255,255,.3);
 }
 
-/* Responsive */
+/* mobile */
 @media(max-width:500px){
 
   h1{
