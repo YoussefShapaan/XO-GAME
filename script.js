@@ -1,4 +1,4 @@
-// ===== حالة اللعبة =====
+// حالهت اللعبة والمتغيرات
 let board = [...Array(9).fill("")];      
 let currentPlayer = "X";                 
 let isGameActive = true;                
@@ -57,7 +57,17 @@ function minimax(boardState, isMaximizing) {
   return bestScore;
 }
 
-function getBestAIMove() {                             
+function getBestAIMove() {  
+ // 30% نسبة الخطأ 
+const emptyCells = board
+  .map((cellValue, cellIndex) => cellValue === "" ? cellIndex : null)
+  .filter(cell => cell !== null);
+  
+if (Math.random() < 0.3) {
+  const randomIndex = Math.floor(Math.random() * emptyCells.length);
+  return emptyCells[randomIndex];
+}
+// افضل حركة باستخدام Minimax 70%                          
   let bestScore = -Infinity;
   let bestCellIndex = 0;                              
 
