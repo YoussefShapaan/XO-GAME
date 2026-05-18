@@ -1,237 +1,227 @@
-let b = [...Array(9).fill("")];
-let p = "X";
-let on = true;
-let mode = "multi";
+// ===== حالة اللعبة =====
+let board = [...Array(9).fill("")];      
+let currentPlayer = "X";                 
+let isGameActive = true;                
+let gameMode = "multi";                 
 
-/* Scores */
-let sc = JSON.parse(localStorage.getItem("scores")) || {
+// Scores stored in localStorage: { X: wins, O: wins, D: draws }
+let scores = JSON.parse(localStorage.getItem("scores")) || {
   X: 0,
   O: 0,
   D: 0
 };
 
-const wins = [
-  [0,1,2],[3,4,5],[6,7,8],
-  [0,3,6],[1,4,7],[2,5,8],
-  [0,4,8],[2,4,6]
+// حلات الفوز الممكنة
+const winningCombinations = [
+  [0,1,2],[3,4,5],[6,7,8],   
+  [0,3,6],[1,4,7],[2,5,8],   
+  [0,4,8],[2,4,6]            
 ];
 
-/* SOUND SYSTEM */
+// الصوت 
 const sounds = {
   click: new Audio("assets/sounds/dog-clicker_IygBqAk.mp3"),
-  win: new Audio("assets/sounds/winner-price-is-right.mp3"),
-  loss: new Audio("assets/sounds/points-loss.mp3")
+  win:   new Audio("assets/sounds/winner-price-is-right.mp3"),
+  loss:  new Audio("assets/sounds/points-loss.mp3")
 };
 
-function playSound(type){
-  if(sounds[type]){
+function playSound(type) {
+  if (sounds[type]) {
     sounds[type].currentTime = 0;
     sounds[type].play();
   }
 }
 
-/* AI (Minimax) */
-function minimax(board, isMax){
+// AI Minimax Algorithm
+function minimax(boardState, isMaximizing) {           
+  const winner = getWinner(boardState);
 
-  const w = getWinner(board);
+  if (winner === "O") return  10;
+  if (winner === "X") return -10;
+  if (!boardState.includes("")) return 0;
 
-  if(w === "O") return 10;
-  if(w === "X") return -10;
-  if(!board.includes("")) return 0;
+  let bestScore = isMaximizing ? -Infinity : Infinity;  
 
-  let best = isMax ? -Infinity : Infinity;
+  boardState.forEach((_, cellIndex) => {              
+    if (boardState[cellIndex] === "") {
+      boardState[cellIndex] = isMaximizing ? "O" : "X";
+      const score = minimax(boardState, !isMaximizing);
+      boardState[cellIndex] = "";
 
-  board.forEach((_, i) => {
-    if(board[i] === ""){
-      board[i] = isMax ? "O" : "X";
-      const value = minimax(board, !isMax);
-      board[i] = "";
-
-      best = isMax
-        ? Math.max(best, value)
-        : Math.min(best, value);
+      bestScore = isMaximizing
+        ? Math.max(bestScore, score)
+        : Math.min(bestScore, score);
     }
   });
 
-  return best;
+  return bestScore;
 }
 
-function bestMove(){
-  let best = -Infinity;
-  let idx = 0;
+function getBestAIMove() {                             
+  let bestScore = -Infinity;
+  let bestCellIndex = 0;                              
 
-  b.forEach((_, i) => {
-    if(b[i] === ""){
-      b[i] = "O";
-      const value = minimax(b, false);
-      b[i] = "";
+  board.forEach((_, cellIndex) => {
+    if (board[cellIndex] === "") {
+      board[cellIndex] = "O";
+      const score = minimax(board, false);
+      board[cellIndex] = "";
 
-      if(value > best){
-        best = value;
-        idx = i;
+      if (score > bestScore) {
+        bestScore = score;
+        bestCellIndex = cellIndex;
       }
     }
   });
 
-  return idx;
+  return bestCellIndex;
 }
 
-/* WIN CHECK */
-function getWinner(board){
-  for(const [a,c,e] of wins){
-    if(board[a] && board[a] === board[c] && board[a] === board[e]){
-      return board[a];
+// التحقق من الفائز
+function getWinner(boardState) {
+  for (const [a, b, c] of winningCombinations) {       
+    if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
+      return boardState[a];
     }
   }
   return null;
 }
 
-/* RENDER BOARD */
-function render(){
-  const el = document.getElementById("board");
-  el.innerHTML = "";
+// رسم اللوحه
+function render() {
+  const boardElement = document.getElementById("board"); 
+  boardElement.innerHTML = "";
 
-  b.forEach((v, i) => {
-    const d = document.createElement("div");
-    d.className = "cell";
+  board.forEach((cellValue, cellIndex) => {              
+    const cell = document.createElement("div");          
+    cell.className = "cell";
 
-    if(v) d.classList.add(v.toLowerCase());
+    if (cellValue) cell.classList.add(cellValue.toLowerCase());
 
-    d.textContent = v;
-    d.onclick = () => move(i);
+    cell.textContent = cellValue;
+    cell.onclick = () => handleCellClick(cellIndex);     
 
-    el.appendChild(d);
+    boardElement.appendChild(cell);
   });
 
-  highlightWinner();
+  highlightWinningCells();                               
 }
 
-/* HIGHLIGHT WIN */
-function highlightWinner(){
-  const el = document.getElementById("board");
+// تلوين الخلايا الفائزة
+function highlightWinningCells() {
+  const boardElement = document.getElementById("board");
 
-  wins.forEach(([a,c,e]) => {
-    if(b[a] && b[a] === b[c] && b[a] === b[e]){
-      [a,c,e].forEach(i => {
-        el.children[i].classList.add("win");
+  winningCombinations.forEach(([a, b, c]) => {
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      [a, b, c].forEach(cellIndex => {
+        boardElement.children[cellIndex].classList.add("win");
       });
     }
   });
 }
 
-/* MOVE */
-function move(i){
-  if(!on || b[i]) return;
+//الضغط على الخلية
+function handleCellClick(cellIndex) {                   
+  if (!isGameActive || board[cellIndex]) return;
 
   playSound("click");
 
-  b[i] = p;
+  board[cellIndex] = currentPlayer;
   render();
 
-  if(checkEnd()) return;
+  if (checkGameEnd()) return;                           
 
-  p = p === "X" ? "O" : "X";
-  updateStatus();
+  currentPlayer = currentPlayer === "X" ? "O" : "X";
+  updateStatusDisplay();                                 
 
-  if(mode === "ai" && p === "O"){
-    setTimeout(aiTurn, 400);
+  if (gameMode === "ai" && currentPlayer === "O") {
+    setTimeout(playAITurn, 400);                         
   }
 }
 
-/* AI TURN */
-function aiTurn(){
-  if(!on) return;
+// دور AI
+function playAITurn() {
+  if (!isGameActive) return;
 
-  b[bestMove()] = "O";
+  board[getBestAIMove()] = "O";
   playSound("click");
 
   render();
 
-  if(checkEnd()) return;
+  if (checkGameEnd()) return;
 
-  p = "X";
-  updateStatus();
+  currentPlayer = "X";
+  updateStatusDisplay();
 }
 
-/* GAME END CHECK */
-function checkEnd(){
+// التحقق من نهاية اللعبة
+function checkGameEnd() {
+  const winner = getWinner(board);
 
-  const w = getWinner(b);
-
-  if(w){
-    on = false;
-    sc[w]++;
+  if (winner) {
+    isGameActive = false;
+    scores[winner]++;
     saveScores();
-    updateScores();
+    updateScoresDisplay();                               
 
-    document.getElementById("status")
-      .textContent = `Player ${w} wins!`;
-
-    playSound("win"); 
-
+    document.getElementById("status").textContent = `Player ${winner} wins!`;
+    playSound("win");
     return true;
   }
 
-  if(!b.includes("")){
-    on = false;
-    sc.D++;
+  if (!board.includes("")) {
+    isGameActive = false;
+    scores.D++;
     saveScores();
-    updateScores();
+    updateScoresDisplay();
 
-    document.getElementById("status")
-      .textContent = "It's a draw!";
-
+    document.getElementById("status").textContent = "It's a draw!";
     playSound("loss");
-
     return true;
   }
 
   return false;
 }
 
-/* UI UPDATES */
-function updateStatus(){
-  document.getElementById("status")
-    .textContent = `Player ${p}'s turn`;
+// تحديث عرض الحالة والنتائج
+function updateStatusDisplay() {
+  document.getElementById("status").textContent = `Player ${currentPlayer}'s turn`;
 }
 
-function updateScores(){
-  document.getElementById("sx").textContent = sc.X;
-  document.getElementById("so").textContent = sc.O;
-  document.getElementById("sd").textContent = sc.D;
+function updateScoresDisplay() {
+  document.getElementById("sx").textContent = scores.X;
+  document.getElementById("so").textContent = scores.O;
+  document.getElementById("sd").textContent = scores.D;
 }
 
-function saveScores(){
-  localStorage.setItem("scores", JSON.stringify(sc));
+function saveScores() {
+  localStorage.setItem("scores", JSON.stringify(scores));
 }
 
-/* CONTROLS */
-function restart(){
-  b = [...Array(9).fill("")];
-  p = "X";
-  on = true;
-  updateStatus();
+// إعادة تشغيل اللعبة
+function restart() {
+  board = [...Array(9).fill("")];
+  currentPlayer = "X";
+  isGameActive = true;
+  updateStatusDisplay();
   render();
 }
-
-function resetScores(){
-  sc = { X:0, O:0, D:0 };
+// إعادة تعيين النتائج
+function resetScores() {
+  scores = { X: 0, O: 0, D: 0 };
   saveScores();
-  updateScores();
+  updateScoresDisplay();
 }
 
-function setMode(m){
-  mode = m;
+function setMode(selectedMode) {                         
+  gameMode = selectedMode;
 
-  document.getElementById("m2")
-    .classList.toggle("active", m === "multi");
-
-  document.getElementById("mai")
-    .classList.toggle("active", m === "ai");
+  document.getElementById("m2").classList.toggle("active", selectedMode === "multi");
+  document.getElementById("mai").classList.toggle("active", selectedMode === "ai");
 
   restart();
 }
 
-/* بداية اللعبة */
-updateScores();
+
+updateScoresDisplay();
 restart();
